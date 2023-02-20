@@ -40,7 +40,8 @@ class MainWindow(QWidget, Ui_Form):
 
         self.webView.setUrl(QUrl(url))
 
-app = QApplication(sys.argv)
-view = MainWindow()
-view.show()
-app.exec()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    view = MainWindow()
+    view.show()
+    app.exec()
