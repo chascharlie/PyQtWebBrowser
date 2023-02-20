@@ -11,7 +11,9 @@ class MainWindow(QWidget, Ui_Form):
         self.backButton.clicked.connect(self.goBack)
         self.forwardButton.clicked.connect(self.goForward)
         self.refreshButton.clicked.connect(self.refresh)
+
         self.addressBar.returnPressed.connect(self.navigateUrl)
+        self.searchBar.returnPressed.connect(self.searchQuery)
         
         self.webView.urlChanged.connect(self.updateUrl)
         self.webView.titleChanged.connect(self.updateTitle)
@@ -39,6 +41,12 @@ class MainWindow(QWidget, Ui_Form):
             url = "http://"+url
 
         self.webView.setUrl(QUrl(url))
+
+    def searchQuery(self):
+        query = self.searchBar.text()
+        url = "https://www.google.com/search?q="+(query.replace(" ","+"))
+        self.webView.setUrl(QUrl(url))
+        self.searchBar.clear()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -45,14 +45,22 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.refreshButton)
 
         self.addressBar = QtWidgets.QLineEdit(Form)
+        self.addressBar.setFixedHeight(40)
         self.addressBar.setObjectName("addressBar")
         self.horizontalLayout.addWidget(self.addressBar)
 
-        self.webView = QtWebEngineWidgets.QWebEngineView(Form)
-        self.webView.setUrl(QtCore.QUrl("about:blank"))
-        self.webView.setObjectName("webView")
+        self.searchBar = QtWidgets.QLineEdit(Form)
+        self.searchBar.setFixedHeight(40)
+        self.searchBar.setMaximumWidth(300)
+        self.searchBar.setPlaceholderText("Search")
+        self.searchBar.setObjectName("searchBar")
+        self.horizontalLayout.addWidget(self.searchBar)
 
         self.verticalLayout.addLayout(self.horizontalLayout)
+
+        self.webView = QtWebEngineWidgets.QWebEngineView(Form)
+        self.webView.setObjectName("webView")
+
         self.verticalLayout.addWidget(self.webView)
 
         self.retranslateUi(Form)
