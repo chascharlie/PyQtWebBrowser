@@ -48,7 +48,20 @@ class MainWindow(QWidget, Ui_Form):
 
     def searchQuery(self):
         query = self.searchBar.text()
-        url = "https://www.google.com/search?q="+(query.replace(" ","+"))
+        index = self.searchSelection.currentIndex()
+        
+        if index == 0:
+            url = "https://www.google.com/search?q="+(query.replace(" ","+"))
+
+        elif index == 1:
+            url = "https://www.bing.com/search?q="+(query.replace(" ","+"))
+
+        elif index == 2:
+            url = "https://search.yahoo.com/search?p="+(query.replace(" ","+"))
+
+        elif index == 3:
+            url = "https://duckduckgo.com/?q="+(query.replace(" ","+"))
+
         self.webView.setUrl(QUrl(url))
         self.searchBar.clear()
 

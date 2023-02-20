@@ -56,6 +56,15 @@ class Ui_Form(object):
         self.searchBar.setObjectName("searchBar")
         self.horizontalLayout.addWidget(self.searchBar)
 
+        self.searchSelection = QtWidgets.QComboBox(Form)
+        self.searchSelection.setFixedHeight(40)
+        self.searchSelection.setObjectName("searchSelection")
+        self.searchSelection.addItem(QtGui.QIcon("Graphics/google.png"), "")
+        self.searchSelection.addItem(QtGui.QIcon("Graphics/bing.png"), "")
+        self.searchSelection.addItem(QtGui.QIcon("Graphics/yahoo.png"), "")
+        self.searchSelection.addItem(QtGui.QIcon("Graphics/duckduckgo.png"), "")
+        self.horizontalLayout.addWidget(self.searchSelection)
+
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.webView = QtWebEngineWidgets.QWebEngineView(Form)
