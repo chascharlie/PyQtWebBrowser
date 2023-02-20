@@ -65,6 +65,14 @@ class Ui_Form(object):
         self.searchSelection.addItem(QtGui.QIcon("Graphics/duckduckgo.png"), "")
         self.horizontalLayout.addWidget(self.searchSelection)
 
+        self.settingsButton = QtWidgets.QToolButton(Form)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Graphics/settings.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.settingsButton.setIcon(icon)
+        self.settingsButton.setIconSize(QtCore.QSize(30, 30))        
+        self.settingsButton.setObjectName("settingsButton")
+        self.horizontalLayout.addWidget(self.settingsButton)
+
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.webView = QtWebEngineWidgets.QWebEngineView(Form)
@@ -81,5 +89,6 @@ class Ui_Form(object):
         self.backButton.setText(_translate("Form", "Back"))
         self.forwardButton.setText(_translate("Form", "Forward"))
         self.refreshButton.setText(_translate("Form", "Refresh"))
+        self.settingsButton.setText(_translate("Form", "Settings"))
 
 from PyQt6 import QtWebEngineWidgets

@@ -1,25 +1,39 @@
 from PyQt6.QtCore import QUrl
 from PyQt6.QtWidgets import QApplication, QWidget 
 
+from dialog import *
 from ui_output import Ui_Form
-import sys
+import sys, os, csv
 
 class MainWindow(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+
+        if not os.path.exists("settings.csv") or os.path.getsize("settings.csv") == 0:
+            with open("settings.csv","w+") as write:
+                writer = csv.writer(write)
+                rows = [["Setting","Value"],["Homepage","https://google.com"],["SearchEngine","0"]]
+                writer.writerows(rows)
+
         self.backButton.clicked.connect(self.goBack)
         self.forwardButton.clicked.connect(self.goForward)
         self.refreshButton.clicked.connect(self.refresh)
-
+    
         self.addressBar.returnPressed.connect(self.navigateUrl)
         self.searchBar.returnPressed.connect(self.searchQuery)
+
+        self.settingsButton.clicked.connect(self.settings)
 
         self.webView.urlChanged.connect(self.updateUrl)
         self.webView.titleChanged.connect(self.updateTitle)
 
-        self.webView.setUrl(QUrl("http://google.com"))
-
+        with open("settings.csv","r") as read:
+            reader = csv.reader(read,skipinitialspace=True)
+            readerList = list(reader)
+            self.webView.setUrl(QUrl(readerList[1][1]))
+            self.searchSelection.setCurrentIndex(int(readerList[2][1]))
+            
     def goBack(self):
         self.webView.back()
 
@@ -65,6 +79,9 @@ class MainWindow(QWidget, Ui_Form):
         self.webView.setUrl(QUrl(url))
         self.searchBar.clear()
 
+    def settings(self):
+        Settings().exec()
+    
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     view = MainWindow()
