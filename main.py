@@ -14,7 +14,7 @@ class MainWindow(QWidget, Ui_Form):
 
         self.addressBar.returnPressed.connect(self.navigateUrl)
         self.searchBar.returnPressed.connect(self.searchQuery)
-        
+
         self.webView.urlChanged.connect(self.updateUrl)
         self.webView.titleChanged.connect(self.updateTitle)
 
@@ -33,6 +33,10 @@ class MainWindow(QWidget, Ui_Form):
         self.addressBar.setText(url.toString())
 
     def updateTitle(self,title):
+        if len(title) > 75:
+            title = title[0:72]
+            title = title + "..."
+
         self.setWindowTitle(f"{title} - PyQtWebBrowser")
 
     def navigateUrl(self):
