@@ -10,7 +10,6 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -75,10 +74,26 @@ class Ui_Form(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.webView = QtWebEngineWidgets.QWebEngineView(Form)
-        self.webView.setObjectName("webView")
+        self.horizontalLayout2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout2.setObjectName("horizontalLayout2")
+        
+        self.addTabButton = QtWidgets.QToolButton(Form)
+        self.addTabButton.setObjectName("addTabButton")
+        self.horizontalLayout2.addWidget(self.addTabButton)
 
-        self.verticalLayout.addWidget(self.webView)
+        self.closeTabButton = QtWidgets.QToolButton(Form)
+        self.closeTabButton.setObjectName("closeTabButton")
+        self.horizontalLayout2.addWidget(self.closeTabButton)
+
+        spacer = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout2.addItem(spacer)
+        self.verticalLayout.addLayout(self.horizontalLayout2)
+
+        self.tabWidget = QtWidgets.QTabWidget(Form)
+        self.tabWidget.setObjectName("tabWidget")
+        self.verticalLayout.addWidget(self.tabWidget)
+
+        self.verticalLayout.addWidget(self.tabWidget)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -90,5 +105,5 @@ class Ui_Form(object):
         self.forwardButton.setText(_translate("Form", "Forward"))
         self.refreshButton.setText(_translate("Form", "Refresh"))
         self.settingsButton.setText(_translate("Form", "Settings"))
-
-from PyQt6 import QtWebEngineWidgets
+        self.addTabButton.setText(_translate("Form", "+"))
+        self.closeTabButton.setText(_translate("Form", "x"))

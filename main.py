@@ -1,5 +1,6 @@
 from PyQt6.QtCore import QUrl
 from PyQt6.QtWidgets import QApplication, QWidget 
+from PyQt6 import QtWebEngineWidgets
 
 from dialog import *
 from ui_output import Ui_Form
@@ -25,23 +26,48 @@ class MainWindow(QWidget, Ui_Form):
 
         self.settingsButton.clicked.connect(self.settings)
 
-        self.webView.urlChanged.connect(self.updateUrl)
-        self.webView.titleChanged.connect(self.updateTitle)
+        self.addTabButton.clicked.connect(self.newTab)
+        self.closeTabButton.clicked.connect(self.closeTab)
+
+        self.tabWidget.currentChanged.connect(self.changeTab)
+
+        self.newTab()
+    
+    def newTab(self):
+        self.tabWidget.addTab(QtWebEngineWidgets.QWebEngineView(),"New Tab")
+        index = self.tabWidget.currentIndex()+1
+        self.tabWidget.setCurrentIndex(index)
+        self.tabWidget.currentWidget().urlChanged.connect(self.updateUrl)
+        self.tabWidget.currentWidget().titleChanged.connect(self.updateTitle)
 
         with open("settings.csv","r") as read:
             reader = csv.reader(read,skipinitialspace=True)
             readerList = list(reader)
-            self.webView.setUrl(QUrl(readerList[1][1]))
+            self.tabWidget.currentWidget().setUrl(QUrl(readerList[1][1]))
             self.searchSelection.setCurrentIndex(int(readerList[2][1]))
-            
+
+    def closeTab(self):
+        index = self.tabWidget.currentIndex()
+        self.tabWidget.removeTab(index)
+        self.tabWidget.setCurrentIndex(index-1)
+
+        if self.tabWidget.count() == 0:
+            self.newTab()        
+
+    def changeTab(self):
+        url = self.tabWidget.currentWidget().url()
+        title = self.tabWidget.currentWidget().title()
+        self.updateUrl(url)
+        self.updateTitle(title)
+
     def goBack(self):
-        self.webView.back()
+        self.tabWidget.currentWidget().back()
 
     def goForward(self):
-        self.webView.forward()
+        self.tabWidget.currentWidget().forward()
 
     def refresh(self):
-        self.webView.reload()
+        self.tabWidget.currentWidget().reload()
 
     def updateUrl(self,url):
         self.addressBar.setText(url.toString())
@@ -53,12 +79,19 @@ class MainWindow(QWidget, Ui_Form):
 
         self.setWindowTitle(f"{title} - PyQtWebBrowser")
 
+        if len(title) > 25:
+            title = title[0:22]
+            title = title + "..."
+
+        index = self.tabWidget.currentIndex()
+        self.tabWidget.setTabText(index,title)
+
     def navigateUrl(self):
         url = self.addressBar.text()
         if not url.startswith("http://") and not url.startswith("https://"):
             url = "http://"+url
 
-        self.webView.setUrl(QUrl(url))
+        self.tabWidget.currentWidget().setUrl(QUrl(url))
 
     def searchQuery(self):
         query = self.searchBar.text()
@@ -76,7 +109,7 @@ class MainWindow(QWidget, Ui_Form):
         elif index == 3:
             url = "https://duckduckgo.com/?q="+(query.replace(" ","+"))
 
-        self.webView.setUrl(QUrl(url))
+        self.tabWidget.currentWidget().setUrl(QUrl(url))
         self.searchBar.clear()
 
     def settings(self):
